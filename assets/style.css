@@ -339,3 +339,18 @@ section{padding:80px 0}
 @media (max-width:1060px){
   .book-layout{grid-template-columns:1fr;gap:28px}
 }
+
+/* Home Discover Gonstead row only. Flex lines center a short last row.
+   The case headshot is inset so the circle does not crop his head or shoulders. */
+.five.gonstead-home{display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-start;gap:26px 16px;margin-left:auto;margin-right:auto}
+.five.gonstead-home figure{flex:0 0 calc(20% - 16px);display:flex;flex-direction:column;align-items:center;margin:0;min-width:0}
+.five.gonstead-home img{margin-left:auto;margin-right:auto}
+.five.gonstead-home img.case-photo{object-fit:contain;object-position:center;padding:18px}
+@media (max-width:1060px){
+  .five.gonstead-home figure{flex-basis:calc(33.333% - 16px)}
+}
+@media (max-width:640px){
+  .five.gonstead-home{gap:26px 14px}
+  .five.gonstead-home figure{flex-basis:calc(50% - 10px)}
+  .five.gonstead-home img.case-photo{padding:16px}
+}
