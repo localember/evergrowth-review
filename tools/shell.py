@@ -182,6 +182,8 @@ def href(slug, depth=0):
         return pre + "education-healthy-choices/"
     if slug == "cla-insight-thermography":
         return pre + "cla-insight-thermography/"
+    if slug == "payment-plans":
+        return pre + "payment-plans/"
     if slug == "site-map":
         return pre + "site-map.html"
     return pre + "site-map.html#" + slug
