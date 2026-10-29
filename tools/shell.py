@@ -194,6 +194,8 @@ def href(slug, depth=0):
         return pre + "contact-us/"
     if slug == "faqs":
         return pre + "faqs/"
+    if slug == "opportunity-hub":
+        return pre + "opportunity-hub/"
     if slug == "site-map":
         return pre + "site-map.html"
     return pre + "site-map.html#" + slug
