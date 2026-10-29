@@ -226,7 +226,8 @@ def build():
         raise SystemExit("old footer copied onto opportunity hub page")
     if 'href="/' in page or "evergrowthchiro.com/" in page or "web.archive.org" in page:
         raise SystemExit("root-absolute or live-site link on opportunity hub page")
-    if 'target="_blank"' in page or 'rel="noopener"' in page:
+    extra_blank = shell.unexpected_blank_targets(page)
+    if extra_blank:
         raise SystemExit("outside link on opportunity hub page")
     if "placeholder=" in page or "Dr. [Last Name]" in page:
         raise SystemExit("placeholder text on opportunity hub page")
@@ -238,9 +239,8 @@ def build():
         raise SystemExit("unconfirmed photo on opportunity hub page")
     if "<img" in main:
         raise SystemExit("image on opportunity hub page")
-    social = ("facebook", "instagram", "linkedin", "youtube", "twitter")
-    if any(word in page.lower() for word in social):
-        raise SystemExit("social link on opportunity hub page")
+    if shell.has_unexpected_social(page):
+        raise SystemExit("unexpected social link on opportunity hub page")
     for word in ("treat", "treatment", "treating", "treated"):
         if word in main.lower():
             raise SystemExit("written or client text uses " + word)

@@ -6,9 +6,9 @@ The only wording change is the title suffix, from
 The heading, the sentence, and the button label stay as written.
 No images. No date of birth field.
 
-PAPERWORK_URL stays empty until the client sends the intake form link.
-When it is set, the button is an outside link: new tab, rel noopener.
-It must not point at the client's current website.
+PAPERWORK_URL is the hosted intake PDF in this repo. The button is a
+new-tab link with rel noopener. It must not point at the client's
+current website.
 """
 import html
 from pathlib import Path
@@ -20,8 +20,8 @@ import shell
 ROOT = Path(__file__).resolve().parents[1]
 DEPTH = 1
 
-# Client intake form. Empty until that link arrives.
-PAPERWORK_URL = ""
+# Hosted intake PDF. Depth-1 path from this page.
+PAPERWORK_URL = "../assets/evergrowth-new-patient-paperwork.pdf"
 
 SENTENCE = (
     "The office of Evergrowth Chiropractic offers our patient forms online "

@@ -81,9 +81,9 @@ def esc(text):
 
 def build():
     home = shell.href("index", DEPTH)
-    forms = shell.href("new-patient-paperwork", DEPTH)
+    pdf = shell.paperwork_href(DEPTH)
     intro = (
-        f"<p>{esc(INTRO_BEFORE)}<a href=\"{forms}\">{esc(INTRO_LINK)}</a>{esc(INTRO_AFTER)}</p>"
+        f"<p>{esc(INTRO_BEFORE)}<a href=\"{pdf}\" target=\"_blank\" rel=\"noopener\">{esc(INTRO_LINK)}</a>{esc(INTRO_AFTER)}</p>"
     )
     cards = []
     for i, (heading, paras) in enumerate(STEPS, start=1):
@@ -94,7 +94,7 @@ def build():
         f'<a href="{shell.href(slug, DEPTH)}">{label}</a>' for label, slug in PATIENTS
     )
     body = f'''<section class="page-hero"><div class="container"><div class="crumbs"><a href="{home}">Home</a><span>/</span>Patients<span>/</span>First Visit</div><h1>1st Chiropractic Visit</h1><p class="sub-h">On your first visit to our office</p></div></section>
-<section class="tint"><div class="container">{intro}{steps}</div></section>
+<section class="tint"><div class="container">{intro}{steps}{shell.pay_box()}</div></section>
 <section><div class="container article-grid"><article class="article"><h2>Ready To Find Out More Information?</h2><div class="book-actions">{shell.book_btn(DEPTH, "Book Appointment")}<a class="phone-link" href="{shell.TEL}">{shell.ICONS["phone"]}{shell.PHONE}</a></div></article>
 <aside class="aside"><div class="side-card"><h3>Book Appointment</h3><p style="font-size:15px">{shell.ADDR1}<br>{shell.ADDR2}</p>{shell.book_btn(DEPTH, "Book Appointment", "btn-block")}<p style="margin:14px 0 0;text-align:center"><a class="phone-link" href="{shell.TEL}">{shell.ICONS["phone"]}{shell.PHONE}</a></p></div>
 <div class="side-card"><h3>Hours</h3><ul><li><span>Mon, Wed, Thu</span><span>10am to 1pm, 3pm to 6pm</span></li><li><span>Tuesday</span><span>3pm to 6pm</span></li><li><span>Friday</span><span>Appointments only</span></li><li><span>Sat, Sun</span><span>Closed</span></li></ul></div>

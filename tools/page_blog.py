@@ -261,7 +261,8 @@ def build():
         raise SystemExit("root-absolute or live-site link on the blog index")
     if "evergrowthchiro.com" not in page.split("mailto:", 1)[1].split('"', 1)[0]:
         raise SystemExit("email missing")
-    if 'target="_blank"' in page or 'rel="noopener"' in page:
+    extra_blank = shell.unexpected_blank_targets(page)
+    if extra_blank:
         raise SystemExit("outside link on the blog index")
     if "placeholder=" in page or "Dr. [Last Name]" in page:
         raise SystemExit("placeholder on the blog index")
@@ -269,9 +270,8 @@ def build():
         raise SystemExit("forbidden field or photo on the blog index")
     if "<img" in main:
         raise SystemExit("image on the blog index")
-    social = ("facebook", "instagram", "linkedin", "youtube", "twitter")
-    if any(word in page.lower() for word in social):
-        raise SystemExit("social link on the blog index")
+    if shell.has_unexpected_social(page):
+        raise SystemExit("unexpected social link on the blog index")
     authored = "Who We Are" + "Blog" + CLOSER + "Book Appointment" + "Read more"
     for word in ("treat", "treatment", "treating", "treated"):
         if word in authored.lower():

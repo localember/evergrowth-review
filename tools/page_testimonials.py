@@ -136,7 +136,8 @@ def build():
         raise SystemExit("old footer copied onto testimonials page")
     if 'href="/' in page or "evergrowthchiro.com/" in page:
         raise SystemExit("root-absolute or live-site link in testimonials page")
-    if 'target="_blank"' in page or "★" in page or "☆" in page:
+    extra_blank = shell.unexpected_blank_targets(page)
+    if extra_blank or "★" in page or "☆" in page:
         raise SystemExit("outside link or star rating in testimonials page")
     if page.count("<cite>") != 12 or 'class="t-grid three"' not in page:
         raise SystemExit("grid is not 12 cards in three columns")

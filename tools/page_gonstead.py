@@ -99,7 +99,7 @@ def build():
     pre = shell.prefix(DEPTH)
     home = shell.href("index", DEPTH)
     circles = "".join(
-        f'<figure><a href="#{anchor}"><img src="{pre}assets/img/stock-gonstead-{file}.webp" alt="" width="250" height="250"><figcaption>{label}</figcaption></a></figure>'
+        f'<figure><a href="#{anchor}"><span class="five-circle"><img src="{pre}assets/img/stock-gonstead-{file}.webp" alt="" width="250" height="250"></span><figcaption>{label}</figcaption></a></figure>'
         for anchor, _heading, file, label, _body in COMPONENTS
     )
     sections = "".join(

@@ -342,9 +342,8 @@ def check_page(slug, h1, page, outside, name_allowed):
         raise SystemExit("unconfirmed photo on " + slug)
     if "<img" in main:
         raise SystemExit("image on " + slug)
-    social = ("facebook", "instagram", "linkedin", "youtube", "twitter")
-    if any(word in page.lower() for word in social):
-        raise SystemExit("social link on " + slug)
+    if shell.has_unexpected_social(page):
+        raise SystemExit("unexpected social link on " + slug)
     if "date of birth" in page.lower():
         raise SystemExit("date of birth on " + slug)
     found = outside_links(main)

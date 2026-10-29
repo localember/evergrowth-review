@@ -483,9 +483,8 @@ def check(page, slug):
             raise SystemExit("forbidden on " + slug + ": " + banned)
     if "<img" in main:
         raise SystemExit("image in the article: " + slug)
-    social = ("facebook.com", "instagram.com", "linkedin.com", "youtube.com", "twitter.com")
-    if any(word in page.lower() for word in social):
-        raise SystemExit("social link on " + slug)
+    if shell.has_unexpected_social(page):
+        raise SystemExit("unexpected social link on " + slug)
     authored = " ".join((
         "Home", "Blog", CLOSER, REQUEST, "Book Appointment", "Hours",
         "Previous Post", "Next Post", "More posts",

@@ -71,10 +71,10 @@ def check(page):
         raise SystemExit("unconfirmed photo on book page")
     if "<img" in main:
         raise SystemExit("image on book page")
-    social = ("facebook", "instagram", "linkedin", "youtube", "twitter")
-    if any(word in page.lower() for word in social):
-        raise SystemExit("social link on book page")
-    if 'target="_blank"' in page or "action=" in main or "method=" in main:
+    if shell.has_unexpected_social(page):
+        raise SystemExit("unexpected social link on book page")
+    extra_blank = shell.unexpected_blank_targets(page)
+    if extra_blank or "action=" in main or "method=" in main:
         raise SystemExit("outside link or form action on book page")
     if "fetch(" in page or "XMLHttpRequest" in page or "navigator.sendBeacon" in page:
         raise SystemExit("network request on book page")

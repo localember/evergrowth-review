@@ -229,7 +229,8 @@ def build():
         raise SystemExit("root-absolute or live-site link on contact page")
     if "<iframe" in page.lower() or "maps/embed" in page:
         raise SystemExit("map embed on contact page")
-    if page.count('target="_blank"') != 1 or page.count('rel="noopener"') != 1:
+    extra_blank = shell.unexpected_blank_targets(page, extra_allowed=("google.com/maps",))
+    if extra_blank:
         raise SystemExit("Google Maps link missing or an extra outside link")
     if "google.com/maps" not in page:
         raise SystemExit("Google Maps link missing")
@@ -239,9 +240,8 @@ def build():
         raise SystemExit("forbidden field or photo on contact page")
     if "<img" in main:
         raise SystemExit("image on contact page")
-    social = ("facebook", "instagram", "linkedin", "youtube", "twitter")
-    if any(word in page.lower() for word in social):
-        raise SystemExit("social link on contact page")
+    if shell.has_unexpected_social(page):
+        raise SystemExit("unexpected social link on contact page")
     before, after_reviews = main.split("Our testimonial", 1)
     written = before + after_reviews.split("</section>", 1)[1]
     for word in ("treat", "treatment", "treating", "treated"):

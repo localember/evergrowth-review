@@ -168,7 +168,8 @@ def check_page(page):
         raise SystemExit("forbidden wording in follow up visit page")
     if 'href="/' in page or "evergrowthchiro.com/" in page:
         raise SystemExit("root-absolute or live-site link in follow up visit page")
-    if "target=" in page:
+    extra_blank = shell.unexpected_blank_targets(page)
+    if extra_blank:
         raise SystemExit("follow up visit page has an outside-link target")
     if "noindex, nofollow" not in page:
         raise SystemExit("missing noindex")

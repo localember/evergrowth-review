@@ -5,6 +5,7 @@ same tab, no target attribute. Later rows should import render_page() and
 book_href() instead of writing their own booking link.
 """
 import html
+import re
 
 BOOK = "book-appointment/"
 PHONE = "(702) 389-5009"
@@ -240,7 +241,77 @@ ICONS = {
     "mail": svg('<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>'),
     "chev": '<svg class="chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 4l4 4 4-4"/></svg>',
     "menu": svg('<path d="M4 7h16M4 12h16M4 17h16"/>'),
+    "instagram": svg('<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.4" cy="6.6" r="1" fill="currentColor" stroke="none"/>'),
+    "facebook": svg('<path d="M14 9h3V6h-3c-2.2 0-4 1.8-4 4v2H8v3h2v7h3v-7h3l1-3h-4v-2c0-.6.4-1 1-1z"/>'),
+    "tiktok": svg('<path d="M14.2 3v10.1a3.6 3.6 0 1 1-2.9-3.5V12a5.9 5.9 0 1 0 5.4 5.9V8.5A8 8 0 0 0 21 10.2V7.2A8 8 0 0 1 14.2 5.2V3z"/>'),
 }
+
+SOCIAL_LINKS = [
+    ("Instagram", "https://www.instagram.com/evergrowthchiro", "instagram"),
+    ("Facebook", "https://www.facebook.com/evergrowthchiro", "facebook"),
+    ("TikTok", "https://www.tiktok.com/@evergrowthchiro", "tiktok"),
+]
+ALLOWED_SOCIAL_URLS = tuple(url.lower() for _label, url, _key in SOCIAL_LINKS)
+PAPERWORK_HREF = "assets/evergrowth-new-patient-paperwork.pdf"
+
+
+def paperwork_href(depth=1):
+    return prefix(depth) + PAPERWORK_HREF
+PAY_COPY = (
+    "We work with several patient financing companies such as CareCredit, "
+    "Cherry and Pay by HFA."
+)
+
+
+def social_list():
+    items = []
+    for label, url, key in SOCIAL_LINKS:
+        href = html.escape(url, quote=True)
+        items.append(
+            f'<li><a href="{href}" target="_blank" rel="noopener" aria-label="{label}">{ICONS[key]}</a></li>'
+        )
+    return '<ul class="foot-social">' + "".join(items) + "</ul>"
+
+
+def pay_box():
+    return (
+        '<div class="pay-box"><h2>Payment &amp; Financing</h2>'
+        f"<p>{html.escape(PAY_COPY)}</p></div>"
+    )
+
+
+def has_unexpected_social(page):
+    hosts = (
+        "facebook.com",
+        "instagram.com",
+        "tiktok.com",
+        "linkedin.com",
+        "youtube.com",
+        "twitter.com",
+        "x.com",
+    )
+    urls = re.findall(r"https?://[^\s\"'<>]+", page.lower())
+    for url in urls:
+        if any(host in url for host in hosts) and not any(
+            allowed in url for allowed in ALLOWED_SOCIAL_URLS
+        ):
+            return True
+    return False
+
+
+def unexpected_blank_targets(page, extra_allowed=()):
+    allowed = ALLOWED_SOCIAL_URLS + tuple(item.lower() for item in extra_allowed)
+    found = []
+    for match in re.finditer(r'<a\b[^>]*>', page, flags=re.I):
+        tag = match.group(0)
+        if "target=" not in tag.lower():
+            continue
+        href_match = re.search(r'href="([^"]+)"', tag, flags=re.I)
+        href = (href_match.group(1) if href_match else "").lower()
+        if any(item in href for item in allowed):
+            continue
+        found.append(href or tag)
+    return found
 
 
 def link(slug, text, depth=0, cls=""):
@@ -316,7 +387,8 @@ def render_page(title, description, body, depth=0):
 <footer class="site-footer"><div class="container">
 <div class="foot-grid">
 <div class="foot-logo"><a href="{home}"><img src="{pre}assets/img/logo-white.png" alt="Evergrowth Chiropractic" width="189" height="64"></a>
-<p>Evergrowth Chiropractic provides personalized chiropractic care using the Gonstead Method, with a focus on precision, comfort, and patient-centered care. Our goal is to help you move, function, and live with greater confidence.</p></div>
+<p>Evergrowth Chiropractic provides personalized chiropractic care using the Gonstead Method, with a focus on precision, comfort, and patient-centered care. Our goal is to help you move, function, and live with greater confidence.</p>
+{social_list()}</div>
 <div><h4>Quick Links</h4><ul>{quick}</ul></div>
 <div><h4>Hours</h4><ul class="hours-list">{hours}</ul></div>
 <div><h4>Contact</h4><ul class="foot-contact">

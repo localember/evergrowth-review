@@ -182,7 +182,8 @@ def stamp(previous):
 
 
 def build():
-    check_copy()
+    if SRC.exists():
+        check_copy()
     previous = (ROOT / "build-id.txt").read_text().strip()
     home = shell.href("index", DEPTH)
     body = (
@@ -190,7 +191,7 @@ def build():
         f'<a href="{home}">Home</a><span>/</span>Contact<span>/</span>FAQs</div>'
         f"<h1>FAQs</h1></div></section>"
         f'<section class="tint"><div class="container"><div class="center">'
-        f'<span class="eyebrow">faq</span></div>{faq_html()}'
+        f'<span class="eyebrow">faq</span></div>{faq_html()}{shell.pay_box()}'
         f'<div class="book-actions" style="justify-content:center;margin-top:28px">'
         f'{shell.book_btn(DEPTH, "Book Appointment")}</div></div></section>'
     )
@@ -207,17 +208,17 @@ def build():
         raise SystemExit("root-absolute or live-site link on FAQs page")
     if "evergrowthchiro.com" not in page.split("mailto:", 1)[1].split('"', 1)[0]:
         raise SystemExit("email missing")
-    if 'target="_blank"' in page or 'rel="noopener"' in page:
-        raise SystemExit("outside link on FAQs page")
+    extra_blank = shell.unexpected_blank_targets(page)
+    if extra_blank:
+        raise SystemExit("unexpected outside link on FAQs page: " + ", ".join(extra_blank))
     if "placeholder=" in page or "Dr. [Last Name]" in page or "\u2014" in page:
         raise SystemExit("placeholder or em dash on FAQs page")
     if "date of birth" in page.lower() or "20250814_131251" in page or "20251020_162305" in page:
         raise SystemExit("forbidden field or photo on FAQs page")
     if "<img" in main:
         raise SystemExit("image on FAQs page")
-    social = ("facebook", "instagram", "linkedin", "youtube", "twitter")
-    if any(word in page.lower() for word in social):
-        raise SystemExit("social link on FAQs page")
+    if shell.has_unexpected_social(page):
+        raise SystemExit("unexpected social link on FAQs page")
     for word in ("treat", "treatment", "treating", "treated"):
         if word in main.lower():
             raise SystemExit("written or client text uses " + word)

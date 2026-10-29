@@ -248,7 +248,8 @@ def build():
         raise SystemExit("old footer copied onto office tour page")
     if 'href="/' in page or "evergrowthchiro.com/" in page:
         raise SystemExit("root-absolute or live-site link in office tour page")
-    if 'target="_blank"' in page or "target=" in main:
+    extra_blank = shell.unexpected_blank_targets(page)
+    if extra_blank:
         raise SystemExit("outside link in office tour page")
     allowed = {
         "office-waiting-room-1200.jpg",

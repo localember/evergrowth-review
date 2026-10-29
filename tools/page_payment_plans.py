@@ -83,13 +83,14 @@ def review_html():
 
 
 def build():
-    check_copy()
+    if SRC.exists():
+        check_copy()
     home = shell.href("index", DEPTH)
     links = "".join(
         f'<a href="{shell.href(slug, DEPTH)}">{label}</a>' for label, slug in PATIENTS
     )
     body = f'''<section class="page-hero"><div class="container"><div class="crumbs"><a href="{home}">Home</a><span>/</span>Patients<span>/</span>Payment Plans</div><h1>Payment Plans</h1></div></section>
-<section><div class="container article-grid"><article class="article"><h2>Ready To Find Out More Information?</h2><div class="book-actions">{shell.book_btn(DEPTH, "Book Appointment")}<a class="phone-link" href="{shell.TEL}">{shell.ICONS["phone"]}{shell.PHONE}</a></div></article>
+<section><div class="container article-grid"><article class="article">{shell.pay_box()}<h2>Ready To Find Out More Information?</h2><div class="book-actions">{shell.book_btn(DEPTH, "Book Appointment")}<a class="phone-link" href="{shell.TEL}">{shell.ICONS["phone"]}{shell.PHONE}</a></div></article>
 <aside class="aside"><div class="side-card"><h3>Book Appointment</h3><p style="font-size:15px">{shell.ADDR1}<br>{shell.ADDR2}</p>{shell.book_btn(DEPTH, "Book Appointment", "btn-block")}<p style="margin:14px 0 0;text-align:center"><a class="phone-link" href="{shell.TEL}">{shell.ICONS["phone"]}{shell.PHONE}</a></p></div>
 <div class="side-card"><h3>Hours</h3><ul><li><span>Mon, Wed, Thu</span><span>10am to 1pm, 3pm to 6pm</span></li><li><span>Tuesday</span><span>3pm to 6pm</span></li><li><span>Friday</span><span>Appointments only</span></li><li><span>Sat, Sun</span><span>Closed</span></li></ul></div>
 <div class="side-card side-links"><h3>Patients</h3>{links}</div></aside></div></section>
@@ -104,8 +105,13 @@ def build():
         raise SystemExit("forbidden wording in payment plans page")
     if 'href="/' in page or "evergrowthchiro.com/" in page:
         raise SystemExit("root-absolute or live-site link in payment plans page")
-    if 'target="_blank"' in page or "pre-payment" in page.lower():
-        raise SystemExit("outside link or invented plan copy in payment plans page")
+    if "pre-payment" in page.lower():
+        raise SystemExit("invented plan copy in payment plans page")
+    if shell.has_unexpected_social(page):
+        raise SystemExit("unexpected social link in payment plans page")
+    extra_blank = shell.unexpected_blank_targets(page)
+    if extra_blank:
+        raise SystemExit("unexpected outside link in payment plans page: " + ", ".join(extra_blank))
     dest = ROOT / "payment-plans" / "index.html"
     dest.parent.mkdir(parents=True, exist_ok=True)
     dest.write_text(page)

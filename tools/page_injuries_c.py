@@ -308,7 +308,7 @@ def check(spec, page, lines):
         problems.append("old address or old copyright leaked")
     if "20250814_131251" in page or "20251020_162305" in page:
         problems.append("unconfirmed photo referenced")
-    if "facebook.com" in page or "instagram.com" in page or "youtube.com" in page:
+    if shell.has_unexpected_social(page):
         problems.append("social link leaked")
     book = page.count('href="../book-appointment/"')
     if book < 4:

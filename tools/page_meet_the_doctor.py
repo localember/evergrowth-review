@@ -340,13 +340,13 @@ def build():
         "20250814_131251",
         "20251020_162305",
         "evergrowthchiro.com/",
-        "facebook.com",
-        "instagram.com",
         "linkedin.com",
         "youtube.com",
     ):
         if forbidden in page:
             raise SystemExit("forbidden wording in meet the doctor page: " + forbidden)
+    if shell.has_unexpected_social(page):
+        raise SystemExit("unexpected social link on meet the doctor page")
     if 'href="/' in page or "target=" in main:
         raise SystemExit("root-absolute or outside link in meet the doctor page")
     if page.count("dr-will-so-portrait.webp") != 1:
