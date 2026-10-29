@@ -214,6 +214,15 @@ def href(slug, depth=0):
         return pre + "terms-of-service/"
     if slug == "site-map":
         return pre + "site-map.html"
+    if slug in (
+        "3-common-conditions-las-vegas-chiropractors-help",
+        "achieve-a-healthier-spine-in-las-vegas",
+        "are-you-looking-for-a-top-las-vegas-chiropractor",
+        "back-pain-tips-from-a-las-vegas-chiropractor",
+        "car-accident-tips-from-a-las-vegas-chiropractor",
+        "chiropractic-for-pregnancy-in-las-vegas",
+    ):
+        return pre + slug + "/"
     return pre + "site-map.html#" + slug
 
 

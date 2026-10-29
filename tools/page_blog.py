@@ -55,11 +55,27 @@ SLUGS = [
     "back-pain-tips-from-a-las-vegas-chiropractor",
 ]
 
+BUILT_POSTS = {
+    "3-common-conditions-las-vegas-chiropractors-help",
+    "achieve-a-healthier-spine-in-las-vegas",
+    "are-you-looking-for-a-top-las-vegas-chiropractor",
+    "back-pain-tips-from-a-las-vegas-chiropractor",
+    "car-accident-tips-from-a-las-vegas-chiropractor",
+    "chiropractic-for-pregnancy-in-las-vegas",
+}
+
+
+def card_href(slug):
+    if slug in BUILT_POSTS:
+        return f"../{slug}/"
+    return f"../site-map.html#blog-{slug}"
+
+
 NOTE = (
     "BUILT from old/pages/blog_20260511.txt. 23 post cards in archive order. "
     "Henderson swapped to Las Vegas in every title and excerpt that named the city. "
     "No images: post photos are not in the archive, so the cards are plain. "
-    "Read more goes to the site map row until that post is built. "
+    "Batch 1 posts link to their pages. The other Read more links go to the site map row until that post is built. "
     "New Patient Special left off. "
     "The old Request An Appointment closer is the shared Book Appointment button."
 )
@@ -131,7 +147,7 @@ def load_cards():
 def cards_html(cards):
     items = []
     for slug, title, excerpt in cards:
-        href = f"../site-map.html#blog-{slug}"
+        href = card_href(slug)
         items.append(
             '<article class="post-card">'
             f'<h2><a href="{href}">{esc(title)}</a></h2>'
@@ -251,7 +267,7 @@ def build():
     for slug, title, excerpt in cards:
         if title not in page or excerpt not in page:
             raise SystemExit("missing card copy: " + title)
-        if f'href="../site-map.html#blog-{slug}"' not in page:
+        if f'href="{card_href(slug)}"' not in page:
             raise SystemExit("missing read-more link: " + slug)
     if page.count('class="post-card"') != 23 or page.count(">Read more<") != 23:
         raise SystemExit("expected 23 cards")
