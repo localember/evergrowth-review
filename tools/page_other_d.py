@@ -196,6 +196,18 @@ def swap_text(text, where, logs):
             logs.append(f"{where}: '{old}' to '{new}' in \"{ctx}\"")
             out = out[:found] + new + out[found + len(old) :]
             start = found + len(new)
+    extras = [
+        ("right here in Las Vegas, HI.", "right here in Las Vegas, NV."),
+        (
+            "Start your unique path to healing with a visit to our clinic at the border of Las Vegas and Las Vegas.",
+            "Start your unique path to healing with a visit to our clinic in the Las Vegas area.",
+        ),
+    ]
+    for old, new in extras:
+        if old not in out:
+            continue
+        logs.append(f"{where}: '{old}' to '{new}'")
+        out = out.replace(old, new)
     return out
 
 
@@ -301,7 +313,7 @@ def check(spec, page, lines):
     if spec["image_name"] not in page:
         problems.append("missing stock hero")
     for line in lines:
-        swapped = line.replace("Henderson, NV", "Las Vegas, NV").replace("Henderson NV", "Las Vegas NV").replace("Henderson", "Las Vegas")
+        swapped = line.replace("Henderson, NV", "Las Vegas, NV").replace("Henderson NV", "Las Vegas NV").replace("Henderson", "Las Vegas").replace("right here in Las Vegas, HI.", "right here in Las Vegas, NV.").replace("Start your unique path to healing with a visit to our clinic at the border of Las Vegas and Las Vegas.", "Start your unique path to healing with a visit to our clinic in the Las Vegas area.")
         escaped = html.escape(swapped, quote=False)
         if escaped in page:
             continue
@@ -327,7 +339,7 @@ def check(spec, page, lines):
 def render(spec, logs):
     width, height = place_image(spec)
     h1, sub, blocks, closing, lines = assemble(spec, logs)
-    title = f"{h1} | Chiropractor Las Vegas NV | Evergrowth Chiropractic"
+    title = f"{h1} - Chiropractor Las Vegas NV | Evergrowth Chiropractic"
     logs.append(f"{spec['slug']}: title '{spec['old_title']}' to '{title}'")
     chrome_log(spec, logs)
     logs.append(

@@ -63,7 +63,7 @@ def build():
 <div class="side-card"><h3>Hours</h3><ul><li><span>Mon, Wed, Thu</span><span>10am to 1pm, 3pm to 6pm</span></li><li><span>Tuesday</span><span>3pm to 6pm</span></li><li><span>Friday</span><span>Appointments only</span></li><li><span>Sat, Sun</span><span>Closed</span></li></ul></div>
 <div class="side-card side-links"><h3>Patients</h3>{links}</div></aside></div></section>'''
     page = shell.render_page(
-        "New Patient Paperwork | Chiropractor Las Vegas NV | Evergrowth Chiropractic",
+        "New Patient Paperwork - Chiropractor Las Vegas NV | Evergrowth Chiropractic",
         SENTENCE,
         body,
         DEPTH,

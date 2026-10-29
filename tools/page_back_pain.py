@@ -136,7 +136,7 @@ def build():
     pre = shell.prefix(DEPTH)
     page = condition.render_condition(
         depth=DEPTH,
-        title="Back Pain Relief | Chiropractor Las Vegas NV | Evergrowth Chiropractic",
+        title="Back Pain Relief - Chiropractor Las Vegas NV | Evergrowth Chiropractic",
         description="Chiropractic care for back pain in Las Vegas, NV at Evergrowth Chiropractic.",
         crumbs=[
             ("Home", "index"),

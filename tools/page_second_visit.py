@@ -78,7 +78,7 @@ def build():
 <div class="side-card side-links"><h3>Patients</h3>{links}</div></aside></div></section>
 {REVIEWS}'''
     page = shell.render_page(
-        "Second Chiropractic Visit | Chiropractor Las Vegas NV | Evergrowth Chiropractic",
+        "Second Chiropractic Visit - Chiropractor Las Vegas NV | Evergrowth Chiropractic",
         INTRO,
         body,
         DEPTH,

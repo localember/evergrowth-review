@@ -341,7 +341,7 @@ def check(spec, page, lines):
 def render(spec, logs):
     width, height = place_image(spec)
     h1, sub, blocks, closing, lines = assemble(spec, logs)
-    title = f"{h1} | Chiropractor Las Vegas NV | Evergrowth Chiropractic"
+    title = f"{h1} - Chiropractor Las Vegas NV | Evergrowth Chiropractic"
     logs.append(f"{spec['slug']}: title '{spec['old_title']}' to '{title}'")
     logs.append(f"{spec['slug']}: {CHROME_ADDRESS}")
     logs.append(f"{spec['slug']}: {CHROME_HOURS}")

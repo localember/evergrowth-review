@@ -118,7 +118,7 @@ def build():
 <div class="side-card side-links"><h3>Gonstead Technique</h3><a href="{shell.href("founder-of-gonstead", DEPTH)}">Dr. Gonstead</a><a href="{shell.href("gonstead-system", DEPTH)}">The 5 Components</a></div></aside></div></section>
 {REVIEWS}'''
     page = shell.render_page(
-        "5 Components of The Gonstead Technique | Chiropractor Las Vegas NV | Evergrowth Chiropractic",
+        "5 Components of The Gonstead Technique - Chiropractor Las Vegas NV | Evergrowth Chiropractic",
         "Why settle for anything less than comprehensive information when making crucial decisions about someone's health?",
         body,
         DEPTH,

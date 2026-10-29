@@ -101,7 +101,7 @@ def build():
 <div class="side-card side-links"><h3>Patients</h3>{links}</div></aside></div></section>
 {REVIEWS}'''
     page = shell.render_page(
-        "First Chiropractic Visit | Chiropractor Las Vegas NV | Evergrowth Chiropractic",
+        "First Chiropractic Visit - Chiropractor Las Vegas NV | Evergrowth Chiropractic",
         "You can expect to spend approximately 45 min. to 1 hour during your first visit.",
         body,
         DEPTH,

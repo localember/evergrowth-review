@@ -49,7 +49,7 @@ def build():
 <div class="side-card side-links"><h3>Gonstead Technique</h3><a href="{shell.href("founder-of-gonstead", DEPTH)}">Dr. Gonstead</a><a href="{shell.href("gonstead-system", DEPTH)}">The 5 Components</a></div></aside></div></section>
 {REVIEWS}'''
     page = shell.render_page(
-        "Founder Of The Gonstead Technique | Chiropractor Las Vegas NV | Evergrowth Chiropractic",
+        "Founder Of The Gonstead Technique - Chiropractor Las Vegas NV | Evergrowth Chiropractic",
         "Unveiling the Legacy of Dr. Clarence Gonstead, D.C.",
         body,
         DEPTH,
