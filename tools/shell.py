@@ -204,6 +204,12 @@ def href(slug, depth=0):
         return pre + "good-faith-estimate/"
     if slug == "healthcare-disclaimer":
         return pre + "healthcare-disclaimer/"
+    if slug == "hipaa-privacy-practices":
+        return pre + "hipaa-privacy-practices/"
+    if slug == "privacy-policy":
+        return pre + "privacy-policy/"
+    if slug == "terms-of-service":
+        return pre + "terms-of-service/"
     if slug == "site-map":
         return pre + "site-map.html"
     return pre + "site-map.html#" + slug
