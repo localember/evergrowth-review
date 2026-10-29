@@ -106,15 +106,15 @@ def render_condition(
     group_links,
     include_reviews=True,
 ):
-    """blocks is a list of ('h2', text), ('p', text), or ('ul', [items]).
-    crumbs is (label, slug or None)."""
+    """blocks is a list of ('h2', text), ('p', text), ('ul', [items]), or ('ol', [items]).
+    crumbs is (label, slug or None). image is None when the page has no hero."""
     parts = []
     for kind, text in blocks:
         if kind == "h2":
             parts.append(f"<h2>{esc(text)}</h2>")
-        elif kind == "ul":
+        elif kind in ("ul", "ol"):
             items = "".join(f"<li>{esc(item)}</li>" for item in text)
-            parts.append(f"<ul>{items}</ul>")
+            parts.append(f"<{kind}>{items}</{kind}>")
         else:
             parts.append(f"<p>{esc(text)}</p>")
     article = "".join(parts)
@@ -127,8 +127,15 @@ def render_condition(
     reviews = reviews_html() if include_reviews else ""
     # A subtitle with a newline is the archive's two-line h3 (a <br>), used by whiplash.
     sub_html = "<br>".join(esc(line) for line in sub.split("\n"))
+    if image:
+        hero = (
+            f'<div class="a-img"><img src="{image}" alt="{esc(image_alt)}" '
+            f'width="{image_w}" height="{image_h}"></div>'
+        )
+    else:
+        hero = ""
     body = f'''<section class="page-hero"><div class="container">{crumbs_html(crumbs, depth)}<h1>{esc(h1)}</h1><p class="sub-h">{sub_html}</p></div></section>
-<section style="padding-top:40px"><div class="container article-grid"><article class="article"><div class="a-img"><img src="{image}" alt="{esc(image_alt)}" width="{image_w}" height="{image_h}"></div>{article}
+<section style="padding-top:40px"><div class="container article-grid"><article class="article">{hero}{article}
 <div class="inline-cta"><p>{esc(closing)}</p><div class="book-actions">{shell.book_btn(depth, "Book Appointment")}{phone}</div></div></article>
 <aside class="aside"><div class="side-card"><h3>Book Appointment</h3><p style="font-size:15px">{shell.ADDR1}<br>{shell.ADDR2}</p>{shell.book_btn(depth, "Book Appointment", "btn-block")}<p style="margin:14px 0 0;text-align:center">{phone}</p></div>
 <div class="side-card"><h3>Hours</h3><ul>{hours}</ul></div>
