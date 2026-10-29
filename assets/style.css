@@ -37,8 +37,9 @@ p{margin:0 0 1em}
 :focus-visible{outline:3px solid var(--brand-deep);outline-offset:2px}
 
 /* buttons: every CTA uses --cta */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--cta);color:var(--cta-text);font-weight:600;font-size:16px;line-height:1.2;text-decoration:none;padding:16px 36px;border-radius:14px;border:0;cursor:pointer;transition:background .15s,transform .15s}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--cta);color:var(--cta-text);font-family:inherit;font-weight:600;font-size:16px;line-height:1.2;text-decoration:none;padding:16px 36px;border-radius:14px;border:0;cursor:pointer;transition:background .15s,transform .15s}
 .btn:hover{background:var(--cta-hover);transform:translateY(-1px)}
+.btn:disabled,.btn:disabled:hover{background:var(--cta);opacity:.55;cursor:not-allowed;transform:none}
 .btn-block{display:flex;width:100%}
 .btn-ghost{background:#fff;color:var(--ink);border:2px solid var(--brand)}
 .btn-ghost:hover{background:var(--brand-tint)}
@@ -308,4 +309,16 @@ section{padding:80px 0}
 @media (max-width:1060px){
   .nap-grid,.contact-form{grid-template-columns:1fr}
   .contact-form .full{grid-column:auto}
+}
+
+/* book appointment: visual form, does not submit */
+.book-layout{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(260px,.8fr);gap:40px;align-items:start}
+.book-side .side-card + .side-card{margin-top:20px}
+.book-side .side-card li{display:block;margin-bottom:12px}
+.book-side .side-card li span{display:block}
+.book-side .side-card li span + span{color:var(--ink);font-weight:600}
+.form-notice{background:var(--brand-tint);border:1.5px solid var(--brand);border-radius:14px;color:var(--ink);font-weight:600;padding:14px 16px;margin:0}
+.contact-form select,.contact-form input[type="date"],.contact-form input[type="time"]{width:100%;font:inherit;color:var(--ink);background:#fff;border:1.5px solid var(--brand-line);border-radius:14px;padding:14px 16px}
+@media (max-width:1060px){
+  .book-layout{grid-template-columns:1fr;gap:28px}
 }

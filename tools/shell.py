@@ -305,7 +305,21 @@ def render_page(title, description, body, depth=0):
 <script src="{pre}assets/site.js"></script></body></html>'''
 
 
+NOTICE = "This form is not active in this preview and will not accept a message."
+CONCERNS = (
+    "Back Pain",
+    "Neck Pain",
+    "Headaches",
+    "Sciatica",
+    "Posture / Spinal Concerns",
+    "Wellness Care",
+    "Other",
+)
+PATIENT_CHOICES = ("New Patient", "Existing Patient")
+
+
 def book_page(depth=1):
+    """Visual booking form. No action, no submit, no network request."""
     pre = prefix(depth)
     hours = "".join(
         f"<li><span>{day}</span><span>{when}</span></li>" for day, when in (
@@ -315,9 +329,24 @@ def book_page(depth=1):
             ("Sat, Sun", "Closed"),
         )
     )
+    concern_options = "".join(f"<option>{html.escape(name)}</option>" for name in CONCERNS)
+    patient_options = "".join(f"<option>{html.escape(name)}</option>" for name in PATIENT_CHOICES)
     body = f'''<section class="page-hero"><div class="container"><div class="crumbs"><a href="{pre}index.html">Home</a><span>/</span>Book Appointment</div><h1>Book Appointment</h1><p class="sub-h">{ADDR1}, {ADDR2}</p></div></section>
-<section><div class="container book-grid"><div><p><a class="phone-link" href="{TEL}">{ICONS["phone"]}{PHONE}</a></p><p><a href="mailto:{EMAIL}">{EMAIL}</a></p></div>
-<div class="side-card"><h3>Hours</h3><ul>{hours}</ul></div></div></section>'''
+<section><div class="container book-layout"><form class="contact-form book-form" onsubmit="return false">
+<p class="full form-notice" role="status">{NOTICE}</p>
+<div><label for="first-name">First Name</label><input id="first-name" name="first-name" type="text" autocomplete="given-name"></div>
+<div><label for="last-name">Last Name</label><input id="last-name" name="last-name" type="text" autocomplete="family-name"></div>
+<div><label for="email">Email Address*</label><input id="email" name="email" type="email" autocomplete="email"></div>
+<div><label for="phone">Phone Number</label><input id="phone" name="phone" type="tel" autocomplete="tel"></div>
+<div><label for="preferred-date">Preferred Date</label><input id="preferred-date" name="preferred-date" type="date"></div>
+<div><label for="preferred-time">Preferred Time</label><input id="preferred-time" name="preferred-time" type="time"></div>
+<div><label for="patient-type">New or Existing Patient</label><select id="patient-type" name="patient-type"><option selected>Select</option>{patient_options}</select></div>
+<div><label for="concern">Concern</label><select id="concern" name="concern"><option selected>Select</option>{concern_options}</select></div>
+<div class="full"><label for="notes">Additional Information</label><textarea id="notes" name="notes"></textarea></div>
+<div class="full"><button class="btn" type="button" disabled>Send Message</button></div>
+</form>
+<div class="book-side"><div class="side-card"><h3>Contact Info</h3><p><a class="phone-link" href="{TEL}">{ICONS["phone"]}{PHONE}</a></p><p><a href="mailto:{EMAIL}">{EMAIL}</a></p></div>
+<div class="side-card"><h3>Hours</h3><ul>{hours}</ul></div></div></div></section>'''
     return render_page(
         "Book Appointment | Evergrowth Chiropractic",
         "Book an appointment at Evergrowth Chiropractic, 9555 S Eastern Ave, Ste 240B, Las Vegas, NV 89123.",
