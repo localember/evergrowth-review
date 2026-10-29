@@ -4,9 +4,13 @@ The archive page is the heading "Welcome to The Office" and the four
 reviews. It has no other sentences. The photo slider on the old site is
 not carried over.
 
-The gallery is the four Las Vegas office photos from 2026-10-29. The
-waiting-room panorama is full width. Under it, two hallway views and the
-suite 240B door sign sit in a grid. No captions and no new sentences.
+The gallery is the Las Vegas office photos from 2026-10-29. The
+waiting-room panorama is full width. Under it, the hallway with the
+spinal chart sits on the left and the suite 240B door sign
+(20261029_105950.jpg) sits on the right. The other hallway view is the
+teal barn-door shot and is a near duplicate, so it is not in this grid.
+That file stays in the repo because Home, Adjustments, and Gonstead
+still use it. No captions and no new sentences.
 
 Old tour files stay off this page. The 2025 reception panorama and the
 adjusting room photo may show the Henderson office. The front desk photo
@@ -67,7 +71,7 @@ NOTE = (
     "Chiropractor Henderson NV | New Patient Experience became Chiropractor Las Vegas NV | Evergrowth Chiropractic. "
     "Old footer address and hours are not copied. The New Patient Special block is left off. "
     "Reviews keep Dr Will and Dr. Will as written. "
-    "Gallery is the four 2026-10-29 Las Vegas office photos: waiting room panorama, two hallway views, and the suite 240B door sign. No captions. "
+    "Gallery is the 2026-10-29 Las Vegas office photos: waiting room panorama, then the spinal-chart hallway on the left and the suite 240B door sign (20261029_105950.jpg) on the right. The teal barn-door hallway is a near duplicate and is left off this page. No captions. "
     "The 2025 reception panorama and the adjusting room photo stay off: they may show the old Henderson office. "
     "The front desk photo stays unused until the client confirms who is in it. "
     "Old tour photos are not used."
@@ -111,14 +115,6 @@ def gallery_html():
             "1200",
             "1200",
             "Hallway looking toward the front desk, with teal barn doors and a spinal chart at Evergrowth Chiropractic",
-        ),
-        (
-            "office-hallway-1200.jpg",
-            "office-hallway-2400.jpg",
-            "2400",
-            "1200",
-            "1200",
-            "Hallway with teal barn doors leading to the front desk at Evergrowth Chiropractic",
         ),
         (
             "office-door-sign-1200.jpg",
@@ -257,8 +253,6 @@ def build():
     allowed = {
         "office-waiting-room-1200.jpg",
         "office-waiting-room-2400.jpg",
-        "office-hallway-1200.jpg",
-        "office-hallway-2400.jpg",
         "office-hallway-chart-1200.jpg",
         "office-hallway-chart-2400.jpg",
         "office-door-sign-1200.jpg",
@@ -275,12 +269,13 @@ def build():
     if srcs != [
         "office-waiting-room-2400.jpg",
         "office-hallway-chart-1200.jpg",
-        "office-hallway-1200.jpg",
         "office-door-sign-1200.jpg",
     ]:
         raise SystemExit("gallery photos out of order")
-    if main.count('loading="lazy"') != 4 or "<figcaption" in main:
-        raise SystemExit("gallery must be four lazy images with no captions")
+    if "office-hallway-1200.jpg" in main or "office-hallway-2400.jpg" in main:
+        raise SystemExit("teal barn-door hallway is still on the office tour page")
+    if main.count('loading="lazy"') != 3 or "<figcaption" in main:
+        raise SystemExit("gallery must be three lazy images with no captions")
     for name in allowed:
         path = ROOT / "assets" / "img" / name
         if not path.exists() or path.stat().st_size < 1000:
