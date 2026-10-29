@@ -140,6 +140,10 @@ def href(slug, depth=0):
         return pre + "first-visit/"
     if slug == "second-visit":
         return pre + "second-visit/"
+    if slug == "who-we-help-athletes-entertainers":
+        return pre + "who-we-help-athletes-entertainers/"
+    if slug == "who-we-help-pregnant-moms-newborns":
+        return pre + "who-we-help-pregnant-moms-newborns/"
     if slug == "who-we-help-accident-injury-recovery":
         return pre + "who-we-help-accident-injury-recovery/"
     if slug == "car-accident":
