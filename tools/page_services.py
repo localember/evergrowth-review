@@ -33,8 +33,8 @@ PAGES = [
         "slug": "chiropractic-adjustments",
         "source": "chiropractic-adjustments_20260417.txt",
         "image_kind": "real",
-        "image_name": "treatment-room.webp",
-        "image_alt": "Adjusting room with a Gonstead style chair and padded benches",
+        "image_name": "office-hallway-1200.jpg",
+        "image_alt": "Hallway with teal barn doors leading to the front desk at Evergrowth Chiropractic",
         "crumb": "Chiropractic Adjustments",
         "map_label": "Chiropractic Adjustments",
         "group": "Services",
@@ -380,7 +380,7 @@ def render(spec, logs):
         image = f"{shell.prefix(DEPTH)}assets/img/{spec['image_name']}"
         if spec["image_kind"] == "real":
             logs.append(
-                f"{spec['slug']}: image real client photo 20250814_130730.jpg as assets/img/{spec['image_name']} ({width}x{height}), same file as Home"
+                f"{spec['slug']}: image real client photo 20261029_105156.jpg as assets/img/{spec['image_name']} ({width}x{height}), teal hallway"
             )
         else:
             logs.append(
@@ -407,6 +407,18 @@ def render(spec, logs):
         group_title=spec["group"],
         group_links=condition.nav_group(spec["group"]),
     )
+    if spec["image_name"] == "office-hallway-1200.jpg" and image:
+        src_2400 = image.replace("office-hallway-1200.jpg", "office-hallway-2400.jpg")
+        alt = html.escape(spec["image_alt"], quote=False)
+        plain = f'<img src="{image}" alt="{alt}" width="{width}" height="{height}">'
+        rich = (
+            f'<img src="{image}" srcset="{image} 1200w, {src_2400} 2400w" '
+            f'sizes="(max-width: 1060px) 100vw, 740px" alt="{alt}" '
+            f'width="{width}" height="{height}">'
+        )
+        if plain not in page:
+            raise SystemExit("adjustments hallway image tag was not the expected shape")
+        page = page.replace(plain, rich, 1)
     check(spec, page, lines)
     dest = ROOT / spec["slug"] / "index.html"
     dest.parent.mkdir(parents=True, exist_ok=True)

@@ -107,7 +107,7 @@ def build():
         for anchor, heading, _file, _label, body in COMPONENTS
     )
     body = f'''<section class="page-hero"><div class="container"><div class="crumbs"><a href="{home}">Home</a><span>/</span>Gonstead Technique<span>/</span>The 5 Components</div><h1>5 Components of The Gonstead Technique</h1></div></section>
-<section style="padding-top:40px"><div class="container article-grid"><article class="article"><div class="a-img"><img src="{pre}assets/img/treatment-room.webp" alt="Adjusting room with a Gonstead style chair and padded benches" width="1200" height="1025"></div>{paras(INTRO)}
+<section style="padding-top:40px"><div class="container article-grid"><article class="article"><div class="a-img"><img src="{pre}assets/img/office-hallway-1200.jpg" srcset="{pre}assets/img/office-hallway-1200.jpg 1200w, {pre}assets/img/office-hallway-2400.jpg 2400w" sizes="(max-width: 1060px) 100vw, 740px" alt="Hallway with teal barn doors leading to the front desk at Evergrowth Chiropractic" width="1200" height="1200"></div>{paras(INTRO)}
 <div class="five compact">{circles}</div>
 {sections}{paras(CLOSING)}
 <h2>Dr. Gonstead's Theory on Disc Subluxation</h2>{paras(DISC)}
