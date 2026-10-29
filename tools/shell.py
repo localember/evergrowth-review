@@ -125,6 +125,8 @@ def href(slug, depth=0):
         return pre + "founder-of-gonstead/"
     if slug == "gonstead-system":
         return pre + "gonstead-system/"
+    if slug == "new-patient-paperwork":
+        return pre + "new-patient-paperwork/"
     if slug == "site-map":
         return pre + "site-map.html"
     return pre + "site-map.html#" + slug
