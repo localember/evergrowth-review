@@ -355,3 +355,18 @@ section{padding:80px 0}
   .five.gonstead-home figure{flex-basis:calc(50% - 10px)}
   .five.gonstead-home img.case-photo{padding:16px}
 }
+
+/* Office Tour gallery. Panorama full width, then two columns. One column on a phone. */
+.tour-gallery{display:grid;gap:28px}
+.tour-pano,.tour-grid figure{margin:0}
+.tour-pano{border-radius:44px;overflow:hidden;box-shadow:14px 18px 0 -2px var(--brand-gray)}
+.tour-pano img{width:100%;height:auto}
+.tour-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.tour-grid img{width:100%;height:auto;border-radius:32px;box-shadow:12px 14px 0 -2px var(--brand-gray)}
+@media (max-width:1060px){
+  .tour-pano{border-radius:32px;box-shadow:9px 11px 0 -2px var(--brand-gray)}
+  .tour-grid img{border-radius:32px;box-shadow:9px 11px 0 -2px var(--brand-gray)}
+}
+@media (max-width:640px){
+  .tour-grid{grid-template-columns:1fr}
+}

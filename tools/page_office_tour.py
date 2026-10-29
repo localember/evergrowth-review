@@ -4,11 +4,14 @@ The archive page is the heading "Welcome to The Office" and the four
 reviews. It has no other sentences. The photo slider on the old site is
 not carried over.
 
-Photos stay off this page. The reception panorama and the adjusting room
-photo may show the old Henderson office. Nothing in either photo shows
-9555 S Eastern Ave, so they are not confirmed as the Las Vegas office.
-The front desk photo stays unused until the client confirms who is in it.
-The old tour files are not used. No stock photo stands in for the office.
+The gallery is the four Las Vegas office photos from 2026-10-29. The
+waiting-room panorama is full width. Under it, two hallway views and the
+suite 240B door sign sit in a grid. No captions and no new sentences.
+
+Old tour files stay off this page. The 2025 reception panorama and the
+adjusting room photo may show the Henderson office. The front desk photo
+stays unused until the client confirms who is in it. No stock photo
+stands in for the office.
 
 Wording changes, and only these:
 - Title suffix "Chiropractor Henderson NV | New Patient Experience"
@@ -59,14 +62,15 @@ REVIEWS = [
 ]
 
 NOTE = (
-    "BUILT. No photos on this page. The old page heading is Welcome to The Office. "
+    "BUILT. The old page heading is Welcome to The Office. "
     "The four reviews on that page are shown word for word. Title suffix "
     "Chiropractor Henderson NV | New Patient Experience became Chiropractor Las Vegas NV | Evergrowth Chiropractic. "
     "Old footer address and hours are not copied. The New Patient Special block is left off. "
     "Reviews keep Dr Will and Dr. Will as written. "
-    "The reception panorama and the adjusting room photo are not shown: nothing in them confirms the Las Vegas office at 9555 S Eastern Ave, and they may show the old Henderson office. "
+    "Gallery is the four 2026-10-29 Las Vegas office photos: waiting room panorama, two hallway views, and the suite 240B door sign. No captions. "
+    "The 2025 reception panorama and the adjusting room photo stay off: they may show the old Henderson office. "
     "The front desk photo stays unused until the client confirms who is in it. "
-    "Old tour photos are not used. More Las Vegas office photos are still needed."
+    "Old tour photos are not used."
 )
 
 
@@ -87,6 +91,61 @@ def check_copy():
         raise SystemExit("archive shape changed")
     if "1263 E Silverado Ranch Blvd #105A" not in raw or "Henderson, NV 89183" not in raw:
         raise SystemExit("old address missing from archive; swap log would be wrong")
+
+
+def gallery_html():
+    img = "../assets/img/"
+    pano = (
+        '<figure class="tour-pano"><img '
+        f'src="{img}office-waiting-room-2400.jpg" '
+        f'srcset="{img}office-waiting-room-1200.jpg 1200w, {img}office-waiting-room-2400.jpg 2400w" '
+        'sizes="(max-width: 1228px) 100vw, 1132px" '
+        'alt="Waiting room and front desk at Evergrowth Chiropractic in Las Vegas" '
+        'width="2400" height="1144" loading="lazy"></figure>'
+    )
+    shots = [
+        (
+            "office-hallway-chart-1200.jpg",
+            "office-hallway-chart-2400.jpg",
+            "2400",
+            "1200",
+            "1200",
+            "Hallway looking toward the front desk, with teal barn doors and a spinal chart at Evergrowth Chiropractic",
+        ),
+        (
+            "office-hallway-1200.jpg",
+            "office-hallway-2400.jpg",
+            "2400",
+            "1200",
+            "1200",
+            "Hallway with teal barn doors leading to the front desk at Evergrowth Chiropractic",
+        ),
+        (
+            "office-door-sign-1200.jpg",
+            "office-door-sign.jpg",
+            "2202",
+            "1200",
+            "754",
+            "Suite 240B door sign for Evergrowth Chiropractic",
+        ),
+    ]
+    cards = []
+    for small, large, large_w, width, height, alt in shots:
+        cards.append(
+            "<figure><img "
+            f'src="{img}{small}" '
+            f'srcset="{img}{small} 1200w, {img}{large} {large_w}w" '
+            'sizes="(max-width: 640px) 100vw, 550px" '
+            f'alt="{esc(alt)}" '
+            f'width="{width}" height="{height}" loading="lazy"></figure>'
+        )
+    return (
+        '<section><div class="container tour-gallery">'
+        + pano
+        + '<div class="tour-grid">'
+        + "".join(cards)
+        + "</div></div></section>"
+    )
 
 
 def review_html():
@@ -138,9 +197,15 @@ def mark_site_map():
     row = html_text[start:end]
     old_cell = "<td>planned (not built)</td>"
     new_cell = '<td><a href="office-tour/">office-tour/</a> (built)</td>'
-    if old_cell not in row:
+    if old_cell in row:
+        row = row.replace(old_cell, new_cell, 1)
+    elif "office-tour/" not in row:
         raise SystemExit("status cell missing")
-    row = row.replace(old_cell, new_cell, 1)
+    row = row.replace(
+        '<span class="tag image">image missing</span>',
+        '<span class="tag ready">content ready</span>',
+        1,
+    )
     note_start = row.rfind("<td>")
     if note_start < 0:
         raise SystemExit("note cell missing")
@@ -150,7 +215,9 @@ def mark_site_map():
 
 
 def stamp(previous):
-    build_id = hashlib.sha256((ROOT / "index.html").read_bytes()).hexdigest()[:12]
+    # This page does not edit the home page. The shared stamp hashes index.html,
+    # so an office-tour-only publish would keep the previous id.
+    build_id = hashlib.sha256((ROOT / "office-tour" / "index.html").read_bytes()).hexdigest()[:12]
     if build_id == previous:
         raise SystemExit("build-id did not change")
     (ROOT / "build-id.txt").write_text(build_id + "\n")
@@ -166,6 +233,7 @@ def build():
         f'<a href="{shell.href(slug, DEPTH)}">{label}</a>' for label, slug in WHO
     )
     body = f'''<section class="page-hero"><div class="container"><div class="crumbs"><a href="{home}">Home</a><span>/</span>Who We Are<span>/</span>Office Tour</div><h1>Welcome to The Office</h1></div></section>
+{gallery_html()}
 {review_html()}
 <section><div class="container article-grid"><article class="article"><h2>Ready To Find Out More Information?</h2><div class="book-actions">{shell.book_btn(DEPTH, "Book Appointment")}<a class="phone-link" href="{shell.TEL}">{shell.ICONS["phone"]}{shell.PHONE}</a></div></article>
 <aside class="aside"><div class="side-card"><h3>Book Appointment</h3><p style="font-size:15px">{shell.ADDR1}<br>{shell.ADDR2}</p>{shell.book_btn(DEPTH, "Book Appointment", "btn-block")}<p style="margin:14px 0 0;text-align:center"><a class="phone-link" href="{shell.TEL}">{shell.ICONS["phone"]}{shell.PHONE}</a></p></div>
@@ -186,8 +254,37 @@ def build():
         raise SystemExit("root-absolute or live-site link in office tour page")
     if 'target="_blank"' in page or "target=" in main:
         raise SystemExit("outside link in office tour page")
-    if "<img" in main or "20251020_162305" in page or "office-tour-3" in page:
-        raise SystemExit("office photo on the page before Las Vegas confirmation")
+    allowed = {
+        "office-waiting-room-1200.jpg",
+        "office-waiting-room-2400.jpg",
+        "office-hallway-1200.jpg",
+        "office-hallway-2400.jpg",
+        "office-hallway-chart-1200.jpg",
+        "office-hallway-chart-2400.jpg",
+        "office-door-sign-1200.jpg",
+        "office-door-sign.jpg",
+    }
+    if "20251020_162305" in page or "office-tour-3" in page or "20250814_" in page or "20251020_" in page:
+        raise SystemExit("old office photo on the page")
+    srcs = []
+    for chunk in main.split("<img")[1:]:
+        src = chunk.split('src="', 1)[1].split('"', 1)[0].rsplit("/", 1)[-1]
+        srcs.append(src)
+        if src not in allowed:
+            raise SystemExit("unexpected image " + src)
+    if srcs != [
+        "office-waiting-room-2400.jpg",
+        "office-hallway-chart-1200.jpg",
+        "office-hallway-1200.jpg",
+        "office-door-sign-1200.jpg",
+    ]:
+        raise SystemExit("gallery photos out of order")
+    if main.count('loading="lazy"') != 4 or "<figcaption" in main:
+        raise SystemExit("gallery must be four lazy images with no captions")
+    for name in allowed:
+        path = ROOT / "assets" / "img" / name
+        if not path.exists() or path.stat().st_size < 1000:
+            raise SystemExit("missing photo file " + name)
     if "\u2014" in page or "Dr. [Last Name]" in page:
         raise SystemExit("em dash or placeholder on office tour page")
     before, after_reviews = main.split("Our testimonial", 1)
