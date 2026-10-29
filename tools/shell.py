@@ -158,6 +158,16 @@ def href(slug, depth=0):
         return pre + "carpal-tunnel/"
     if slug == "shoulder-pain":
         return pre + "shoulder-pain/"
+    if slug == "pediatric-care-kids":
+        return pre + "pediatric-care-kids/"
+    if slug == "pregnancy":
+        return pre + "pregnancy/"
+    if slug == "who-we-help-people":
+        return pre + "who-we-help-people/"
+    if slug == "vertigo":
+        return pre + "vertigo/"
+    if slug == "wellness-care":
+        return pre + "wellness-care/"
     if slug == "site-map":
         return pre + "site-map.html"
     return pre + "site-map.html#" + slug
