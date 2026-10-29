@@ -11,7 +11,7 @@ Wording changes, and only these:
 The hiring paragraphs already say Las Vegas. They are left as written.
 No doctor name appears in the hiring copy, so there is no name swap.
 The New Patient Special block is left off.
-The form is shown and is not wired to a CRM. No inactive-form notice.
+The form is shown and does not submit. It shows the same not-active notice as Book Appointment.
 No images.
 """
 import hashlib
@@ -63,7 +63,7 @@ NOTE = (
     "old hours Mon through Fri 10am - 6pm, Sat and Sun Closed, replaced by the shared shell hours. "
     "No doctor name in the hiring copy, so no name swap. "
     "New Patient Special and New Patient Special Offer left off. "
-    "Form fields shown: first name, last name, email, phone, year, college. Submit is not wired. "
+    "Form fields shown: first name, last name, email, phone, year, college. The form shows the not-active notice and does not submit. "
     "No date of birth field. No images."
 )
 
@@ -126,8 +126,9 @@ def form_html():
         )
     return (
         '<form class="contact-form" onsubmit="return false">'
+        + '<p class="full form-notice" role="status">This form is not active in this preview and will not accept a message.</p>'
         + "".join(fields)
-        + '<div class="full"><button class="btn" type="submit">Submit</button></div></form>'
+        + '<div class="full"><button class="btn" type="button" disabled>Submit</button></div></form>'
     )
 
 
@@ -243,8 +244,10 @@ def build():
     for word in ("treat", "treatment", "treating", "treated"):
         if word in main.lower():
             raise SystemExit("written or client text uses " + word)
-    if 'action="' in main or "onsubmit=\"return false\"" not in main:
-        raise SystemExit("form is wired or missing the contact-page hold")
+    if 'action="' in main or "onsubmit=\"return false\"" not in main or "This form is not active in this preview and will not accept a message." not in main:
+        raise SystemExit("form is wired or missing the not-active notice")
+    if 'type="submit"' in main:
+        raise SystemExit("hiring form still has a submit button")
     for needed in (
         HEADING,
         SUBHEAD,

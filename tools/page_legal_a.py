@@ -8,8 +8,10 @@ Wording changes, and only these, on every page:
   new hours.
 
 No doctor name appears in these four pages, so there is no name swap.
-Body sentences stay as written, including chiropracticmaui.com, the
-HHS address in Washington, D.C., and the $400 dispute line.
+Body sentences stay as written, except two plain-text mentions of
+chiropracticmaui.com on the accessibility statement, which are replaced
+with evergrowthchiro.com and are not links. The HHS address in
+Washington, D.C., and the $400 dispute line stay as written.
 The New Patient Special block is left off.
 Outside links open in a new tab. Book Appointment stays on this preview.
 No images.
@@ -56,11 +58,11 @@ ACCESS_DISC = (
     "Evergrowth Chiropractic continues its efforts to constantly improve the accessibility of its site and services in the belief that it is our collective moral obligation to allow seamless, accessible, and unhindered use also for those of us with disabilities."
 )
 ACCESS_DISC2 = (
-    "Despite our efforts to make all pages and content on chiropracticmaui.com fully accessible, some content may not have yet been fully adapted to the strictest accessibility standards. This may be a result of not having found or identified the most appropriate technological solution."
+    "Despite our efforts to make all pages and content on evergrowthchiro.com fully accessible, some content may not have yet been fully adapted to the strictest accessibility standards. This may be a result of not having found or identified the most appropriate technological solution."
 )
 ACCESS_HERE_H = "Here For You"
 ACCESS_HERE = (
-    "If you are experiencing difficulty with any content on chiropracticmaui.com or require assistance with any part of our site, please contact us during normal business hours at (702) 389-5009, and we will be happy to assist."
+    "If you are experiencing difficulty with any content on evergrowthchiro.com or require assistance with any part of our site, please contact us during normal business hours at (702) 389-5009, and we will be happy to assist."
 )
 ACCESS_CONTACT_H = "Contact Us"
 ACCESS_CONTACT = (
@@ -107,7 +109,7 @@ HEALTH = (
 
 NOTES = {
     "accessibility-statement": (
-        "BUILT from old/pages/accessibility-statement_20260417.txt. Body copy left as written, including chiropracticmaui.com. "
+        "BUILT from old/pages/accessibility-statement_20260417.txt. Body copy left as written, except two plain-text template-domain mentions were replaced with evergrowthchiro.com and are not links. "
         "Title Henderson and New Patient Experience swapped to Las Vegas and Evergrowth Chiropractic. "
         "Old footer address 1263 E Silverado Ranch Blvd #105A, Henderson, NV 89183 was not copied. "
         "Old hours on that capture (Mon, Wed, Thu 10am - 1pm and 3pm - 6pm, Tues 3pm - 6pm, Fri 10am - 1pm, Sat 10am - 1 pm, Sun Closed) were not copied. "
@@ -548,11 +550,13 @@ def build():
         if f"site-map.html#{slug}" in home:
             raise SystemExit("home still has the site map anchor: " + slug)
     access = (ROOT / "accessibility-statement" / "index.html").read_text()
-    if access.count("chiropracticmaui.com") != 2:
-        raise SystemExit("maui wording was edited")
+    if "chiropracticmaui.com" in access:
+        raise SystemExit("maui domain still present")
+    if access.count("on evergrowthchiro.com fully accessible") != 1 or access.count("on evergrowthchiro.com or require assistance") != 1:
+        raise SystemExit("accessibility domain sentences missing")
     main = access.split("<main", 1)[1].split("</main>", 1)[0]
-    if "chiropracticmaui.com</a>" in main or 'href="http://chiropracticmaui.com' in main or 'href="https://chiropracticmaui.com' in main:
-        raise SystemExit("maui domain was turned into a link")
+    if 'href="http://evergrowthchiro.com' in main or 'href="https://evergrowthchiro.com' in main or 'href="//evergrowthchiro.com' in main:
+        raise SystemExit("client domain was turned into a link")
     anti = (ROOT / "anti-discrimination-disclaimer" / "index.html").read_text()
     if len(re.findall(r"\btreat\b", anti)) != 1:
         raise SystemExit("treat wording changed")

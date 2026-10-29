@@ -18,7 +18,7 @@ Wording changes, and only these:
 The New Patient Special block and the social links are left off.
 No map embed. One Google Maps link opens in a new tab.
 Reviews stay word for word, including Dr Will and Dr. Will.
-The form is shown and is not wired to a CRM. No inactive-form notice.
+The form is shown and does not submit. It shows the same not-active notice as Book Appointment.
 """
 import hashlib
 import html
@@ -60,7 +60,7 @@ MAP = (
 
 NOTE = (
     "BUILT. Form fields shown: first name, last name, phone, email, message, "
-    "SMS opt-in (old wording kept). Submit is not wired to a CRM. No date of birth field. "
+    "SMS opt-in (old wording kept). Submit is not wired to a CRM. The form shows the not-active notice and does not submit. No date of birth field. "
     "No map embed. Google Maps link opens in a new tab. "
     "Swaps: title Henderson and New Patient Experience to Las Vegas and Evergrowth Chiropractic; "
     "1263 E Silverado Ranch Blvd #105A, Henderson, NV 89183 to 9555 S Eastern Ave, Ste 240B, Las Vegas, NV 89123; "
@@ -202,6 +202,7 @@ def build():
 </div></section>
 <section><div class="container" style="max-width:800px"><h2>Contact Us</h2><p>Fill out the form below, including all required fields, and we will contact you as soon as possible.</p>
 <form class="contact-form" onsubmit="return false">
+<p class="full form-notice" role="status">This form is not active in this preview and will not accept a message.</p>
 <div><label for="first-name">First Name*</label><input id="first-name" name="first-name" type="text" required></div>
 <div><label for="last-name">Last Name*</label><input id="last-name" name="last-name" type="text" required></div>
 <div><label for="phone">Phone*</label><input id="phone" name="phone" type="tel" required></div>
@@ -209,7 +210,7 @@ def build():
 <div class="full"><label for="message">Message*</label><textarea id="message" name="message" required></textarea></div>
 <div class="full"><p style="margin:0 0 8px;font-weight:600;color:var(--ink)">Text Messages</p><label class="check"><input type="checkbox" name="sms-opt-in"> Opt-in to Text Messages</label></div>
 <div class="full fine"><p>By providing a telephone number and checking the box to Opt-in to Text Messages, I consent to be contacted by SMS text messages regarding customer care, account notifications, and delivery notifications. Reply STOP to opt out of further messaging. Reply HELP for more information. Message frequency may vary. Message and data rates may apply. I agree with the <a href="../site-map.html#privacy-policy">Privacy Policy</a> and <a href="../site-map.html#terms-of-service">Terms and Conditions</a> for Evergrowth Chiropractic.</p></div>
-<div class="full"><button class="btn" type="submit">Submit</button></div>
+<div class="full"><button class="btn" type="button" disabled>Submit</button></div>
 </form></div></section>
 {review_html()}
 <section class="cta-band"><div class="container"><div class="box"><h2>Ready To Find Out More Information?</h2><div class="book-actions" style="justify-content:center">{shell.book_btn(DEPTH, "Request An Appointment")}</div></div></div></section>'''
@@ -289,8 +290,10 @@ def build():
         raise SystemExit("Request An Appointment opens in a new tab")
     if page.count("<cite>") != 4:
         raise SystemExit("expected four reviews")
-    if "onsubmit=\"return false\"" not in page:
-        raise SystemExit("form would submit")
+    if "onsubmit=\"return false\"" not in page or "This form is not active in this preview and will not accept a message." not in page:
+        raise SystemExit("form would submit or is missing the not-active notice")
+    if 'type="submit"' in page:
+        raise SystemExit("contact form still has a submit button")
     dest = ROOT / SLUG / "index.html"
     dest.parent.mkdir(parents=True, exist_ok=True)
     dest.write_text(page)

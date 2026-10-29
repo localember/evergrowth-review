@@ -39,7 +39,7 @@ p{margin:0 0 1em}
 /* buttons: every CTA uses --cta */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--cta);color:var(--cta-text);font-family:inherit;font-weight:600;font-size:16px;line-height:1.2;text-decoration:none;padding:16px 36px;border-radius:14px;border:0;cursor:pointer;transition:background .15s,transform .15s}
 .btn:hover{background:var(--cta-hover);transform:translateY(-1px)}
-.btn:disabled,.btn:disabled:hover{background:var(--cta);opacity:.55;cursor:not-allowed;transform:none}
+.btn:disabled,.btn:disabled:hover{cursor:not-allowed;transform:none}
 .btn-block{display:flex;width:100%}
 .btn-ghost{background:#fff;color:var(--ink);border:2px solid var(--brand)}
 .btn-ghost:hover{background:var(--brand-tint)}
@@ -211,7 +211,8 @@ section{padding:80px 0}
 .crumbs span{margin:0 6px;color:#7a8486}
 .page-hero h1{font-size:clamp(32px,4vw,48px);margin-bottom:10px}
 .page-hero .sub-h{font-size:clamp(20px,2.2vw,26px);color:var(--brand-deep);font-weight:600;margin:0}
-.article-grid{display:grid;grid-template-columns:1fr 340px;gap:56px;align-items:start}
+.article-grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:56px;align-items:start}
+.article{min-width:0;overflow-wrap:anywhere}
 .article h2{font-size:clamp(24px,2.6vw,30px);margin-top:1.6em}
 .article h2:first-of-type{margin-top:0}
 .article .a-img{border-radius:32px;overflow:hidden;margin-bottom:28px;aspect-ratio:3/2;box-shadow:12px 14px 0 -2px var(--brand-gray)}
@@ -259,7 +260,7 @@ section{padding:80px 0}
   .m-cta{margin-top:20px}
   .hero-grid,.about-grid,.doc-grid,.why-grid,.book-grid,.fun-grid,.nap-grid,.contact-form{grid-template-columns:1fr;gap:36px}
   .contact-form .full{grid-column:auto}
-  .article-grid{grid-template-columns:1fr}
+  .article-grid{grid-template-columns:minmax(0,1fr)}
   .aside{position:static}
   .five{grid-template-columns:repeat(3,1fr)}
   .steps,.steps.n4{grid-template-columns:repeat(2,1fr)}
