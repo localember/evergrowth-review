@@ -12,7 +12,7 @@ Wording changes, and only these:
   Appointment link, same tab, same as the other built pages.
 No doctor name appears in the index copy, so there is no name swap.
 No images. Post cards are plain until each post is built.
-Read more points at the site-map row for that post.
+Batch 1 and batch 2 Read more links point at the post. The rest point at the site-map row.
 """
 import hashlib
 import html
@@ -62,6 +62,12 @@ BUILT_POSTS = {
     "back-pain-tips-from-a-las-vegas-chiropractor",
     "car-accident-tips-from-a-las-vegas-chiropractor",
     "chiropractic-for-pregnancy-in-las-vegas",
+    "chiropractic-treatment-for-car-accidents-in-las-vegas",
+    "chiropractor-in-las-vegas-talks-about-headaches",
+    "chiropractors-in-las-vegas-have-extensive-schooling",
+    "exercise-smarter-in-las-vegas",
+    "headache-tips-from-a-las-vegas-chiropractic-office",
+    "las-vegas-athletes-improve-with-chiropractic-care",
 }
 
 
@@ -75,7 +81,7 @@ NOTE = (
     "BUILT from old/pages/blog_20260511.txt. 23 post cards in archive order. "
     "Henderson swapped to Las Vegas in every title and excerpt that named the city. "
     "No images: post photos are not in the archive, so the cards are plain. "
-    "Batch 1 posts link to their pages. The other Read more links go to the site map row until that post is built. "
+    "Batch 1 and batch 2 posts link to their pages. The other Read more links go to the site map row until that post is built. "
     "New Patient Special left off. "
     "The old Request An Appointment closer is the shared Book Appointment button."
 )
