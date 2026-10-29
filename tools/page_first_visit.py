@@ -9,6 +9,8 @@ Wording changes, and only these:
 The new address and hours come from the shared shell, not from the old footer.
 Reviews stay word for word. No images. The five numbered cards reuse the
 Home steps layout.
+The intro no longer says the forms are filled out online. Patients download
+and print the PDF, then bring it to the first visit.
 """
 import html
 from pathlib import Path
@@ -22,11 +24,11 @@ DEPTH = 1
 
 INTRO_BEFORE = (
     "You can expect to spend approximately 45 min. to 1 hour during your first visit. "
-    "Prior to your visit, Las Vegas, NV chiropractors ask that you fill out our “"
+    "Prior to your visit, please download and print our “"
 )
 INTRO_LINK = "initial visit forms"
 INTRO_AFTER = (
-    "” online with details regarding your health history. This saves valuable time "
+    "”, fill them out, and bring them with you to your first visit. This saves valuable time "
     "when you have these forms filled out in advance."
 )
 
@@ -106,6 +108,11 @@ def build():
         body,
         DEPTH,
     )
+    page = page.replace('assets/style.css"', 'assets/style.css?v=r41"', 1)
+    if " online" in page.lower() or "fill out our" in page:
+        raise SystemExit("first visit still says the forms are completed online")
+    if 'content="noindex, nofollow"' not in page:
+        raise SystemExit("missing noindex")
     dest = ROOT / "first-visit" / "index.html"
     dest.parent.mkdir(parents=True, exist_ok=True)
     dest.write_text(page)
