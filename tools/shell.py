@@ -188,6 +188,8 @@ def href(slug, depth=0):
         return pre + "testimonials/"
     if slug == "office-tour":
         return pre + "office-tour/"
+    if slug == "meet-the-doctor":
+        return pre + "meet-the-doctor/"
     if slug == "site-map":
         return pre + "site-map.html"
     return pre + "site-map.html#" + slug
