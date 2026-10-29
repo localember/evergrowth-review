@@ -4,6 +4,7 @@ BOOK is the only Book Appointment target. It is an internal folder path,
 same tab, no target attribute. Later rows should import render_page() and
 book_href() instead of writing their own booking link.
 """
+import html
 
 BOOK = "book-appointment/"
 PHONE = "(702) 389-5009"
@@ -121,6 +122,14 @@ def href(slug, depth=0):
         return book_href(depth)
     if slug == "back-pain":
         return pre + "back-pain/"
+    if slug == "headaches-migraines":
+        return pre + "headaches-migraines/"
+    if slug == "neck-pain":
+        return pre + "neck-pain/"
+    if slug == "sciatica":
+        return pre + "sciatica/"
+    if slug == "scoliosis":
+        return pre + "scoliosis/"
     if slug == "founder-of-gonstead":
         return pre + "founder-of-gonstead/"
     if slug == "gonstead-system":
@@ -214,7 +223,7 @@ def render_page(title, description, body, depth=0):
     legal = "".join(f"<li>{link(slug, label, depth)}</li>" for slug, label in LEGAL)
     return f'''<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="robots" content="noindex, nofollow"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>{title}</title><meta name="description" content="{description}">
+<title>{html.escape(title)}</title><meta name="description" content="{html.escape(description, quote=True)}">
 <link rel="stylesheet" href="{pre}assets/style.css"></head><body>
 <a class="skip" href="#main">Skip to content</a>
 <header class="site-header"><div class="container hdr">

@@ -106,11 +106,18 @@ def render_condition(
     group_links,
     include_reviews=True,
 ):
-    """blocks is a list of ('h2' or 'p', text). crumbs is (label, slug or None)."""
-    article = "".join(
-        f"<h2>{esc(text)}</h2>" if kind == "h2" else f"<p>{esc(text)}</p>"
-        for kind, text in blocks
-    )
+    """blocks is a list of ('h2', text), ('p', text), or ('ul', [items]).
+    crumbs is (label, slug or None)."""
+    parts = []
+    for kind, text in blocks:
+        if kind == "h2":
+            parts.append(f"<h2>{esc(text)}</h2>")
+        elif kind == "ul":
+            items = "".join(f"<li>{esc(item)}</li>" for item in text)
+            parts.append(f"<ul>{items}</ul>")
+        else:
+            parts.append(f"<p>{esc(text)}</p>")
+    article = "".join(parts)
     links = "".join(
         f'<a href="{shell.href(slug, depth)}">{label}</a>'
         for label, slug in group_links
