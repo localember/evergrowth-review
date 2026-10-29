@@ -121,6 +121,8 @@ def href(slug, depth=0):
         return book_href(depth)
     if slug == "back-pain":
         return pre + "back-pain/"
+    if slug == "founder-of-gonstead":
+        return pre + "founder-of-gonstead/"
     if slug == "site-map":
         return pre + "site-map.html"
     return pre + "site-map.html#" + slug
