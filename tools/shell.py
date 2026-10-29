@@ -129,6 +129,8 @@ def href(slug, depth=0):
         return pre + "new-patient-paperwork/"
     if slug == "first-visit":
         return pre + "first-visit/"
+    if slug == "second-visit":
+        return pre + "second-visit/"
     if slug == "site-map":
         return pre + "site-map.html"
     return pre + "site-map.html#" + slug
