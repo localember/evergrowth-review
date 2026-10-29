@@ -196,6 +196,14 @@ def href(slug, depth=0):
         return pre + "faqs/"
     if slug == "opportunity-hub":
         return pre + "opportunity-hub/"
+    if slug == "accessibility-statement":
+        return pre + "accessibility-statement/"
+    if slug == "anti-discrimination-disclaimer":
+        return pre + "anti-discrimination-disclaimer/"
+    if slug == "good-faith-estimate":
+        return pre + "good-faith-estimate/"
+    if slug == "healthcare-disclaimer":
+        return pre + "healthcare-disclaimer/"
     if slug == "site-map":
         return pre + "site-map.html"
     return pre + "site-map.html#" + slug
