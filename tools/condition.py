@@ -125,7 +125,9 @@ def render_condition(
     hours = "".join(f"<li><span>{day}</span><span>{when}</span></li>" for day, when in SIDE_HOURS)
     phone = f'<a class="phone-link" href="{shell.TEL}">{shell.ICONS["phone"]}{shell.PHONE}</a>'
     reviews = reviews_html() if include_reviews else ""
-    body = f'''<section class="page-hero"><div class="container">{crumbs_html(crumbs, depth)}<h1>{esc(h1)}</h1><p class="sub-h">{esc(sub)}</p></div></section>
+    # A subtitle with a newline is the archive's two-line h3 (a <br>), used by whiplash.
+    sub_html = "<br>".join(esc(line) for line in sub.split("\n"))
+    body = f'''<section class="page-hero"><div class="container">{crumbs_html(crumbs, depth)}<h1>{esc(h1)}</h1><p class="sub-h">{sub_html}</p></div></section>
 <section style="padding-top:40px"><div class="container article-grid"><article class="article"><div class="a-img"><img src="{image}" alt="{esc(image_alt)}" width="{image_w}" height="{image_h}"></div>{article}
 <div class="inline-cta"><p>{esc(closing)}</p><div class="book-actions">{shell.book_btn(depth, "Book Appointment")}{phone}</div></div></article>
 <aside class="aside"><div class="side-card"><h3>Book Appointment</h3><p style="font-size:15px">{shell.ADDR1}<br>{shell.ADDR2}</p>{shell.book_btn(depth, "Book Appointment", "btn-block")}<p style="margin:14px 0 0;text-align:center">{phone}</p></div>
