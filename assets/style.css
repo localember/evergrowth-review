@@ -241,7 +241,8 @@ section{padding:80px 0}
   .m-sub a{display:block;padding:9px 6px;color:var(--ink);text-decoration:none;font-size:16px}
   .m-sub h4{font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--brand-deep);margin:12px 0 2px 6px}
   .m-cta{margin-top:20px}
-  .hero-grid,.about-grid,.doc-grid,.why-grid,.book-grid,.fun-grid{grid-template-columns:1fr;gap:36px}
+  .hero-grid,.about-grid,.doc-grid,.why-grid,.book-grid,.fun-grid,.nap-grid,.contact-form{grid-template-columns:1fr;gap:36px}
+  .contact-form .full{grid-column:auto}
   .article-grid{grid-template-columns:1fr}
   .aside{position:static}
   .five{grid-template-columns:repeat(3,1fr)}
@@ -291,4 +292,20 @@ section{padding:80px 0}
   .pano{aspect-ratio:4/3;object-position:center}
   .pano img{object-position:58% 50%}
   .hero-img.portrait{max-width:none}
+}
+
+/* contact page */
+.nap-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.nap-grid .side-card p{margin:0}
+.contact-form{display:grid;grid-template-columns:1fr 1fr;gap:18px 20px;margin-top:8px}
+.contact-form .full{grid-column:1 / -1}
+.contact-form label{display:block;font-weight:600;color:var(--ink);font-size:15px;margin:0 0 6px}
+.contact-form input[type="text"],.contact-form input[type="email"],.contact-form input[type="tel"],.contact-form textarea{width:100%;font:inherit;color:var(--ink);background:#fff;border:1.5px solid var(--brand-line);border-radius:14px;padding:14px 16px}
+.contact-form textarea{min-height:140px;resize:vertical}
+.contact-form .check{display:flex;gap:10px;align-items:flex-start;font-weight:600;color:var(--ink)}
+.contact-form .check input{width:18px;height:18px;margin-top:4px;flex:none}
+.fine{font-size:14.5px}
+@media (max-width:1060px){
+  .nap-grid,.contact-form{grid-template-columns:1fr}
+  .contact-form .full{grid-column:auto}
 }
